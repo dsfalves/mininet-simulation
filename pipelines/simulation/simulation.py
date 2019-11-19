@@ -40,21 +40,21 @@ def create_topology():
     for i in range(1, num_hosts+1):
         name = 'h%d' % i
         ip = '10.0.0.%d' % i
-        hosts.append(net.addHost(name, ip))
+        hosts.append(net.addHost(name, ip=ip))
 
     switches = []
     info('*** Adding switch\n')
     for i in range(1, num_hosts+1):
         name = 's%d' % i
-        switch.append(net.addSwitch(name))
+        switches.append(net.addSwitch(name))
 
     info('*** Creating links\n')
     for h, s in zip(hosts, switches):
         net.addLink(h, s)
     for i in range(num_hosts):
         for k in range(i+1, num_hosts):
-            net.addLink(s[i], s[k],
-                        bw='%dm' % speeds[i][k])
+            net.addLink(switches[i], switches[k],
+                        bw=speeds[i][k])
 
     info('*** Running CLI\n')
     CLI(net)
