@@ -4,7 +4,20 @@ metadata:
   license: CC-BY-4.0
   publication_type: article
   upload_type: publication
-pipelines: {}
+pipelines:
+  simulation:
+    envs:
+      host:
+        args: []
+    parameters: []
+    path: pipelines/simulation
+    requirements: {}
+    stages:
+    - setup
+    - run
+    - post-run
+    - validate
+    - teardown
 search_sources:
 - popperized
 version: 1
