@@ -31,7 +31,8 @@ speeds = [
 ]
 
 class Topology(Topo):
-    def build(self):
+    def __init__(self):
+        Topo.__init__(self)
         hosts = []
         info('*** Adding hosts\n')
         num_hosts = len(dc)
