@@ -38,20 +38,20 @@ class Topology(Topo):
         for i in range(1, num_hosts+1):
             name = 'h%d' % i
             ip = '10.0.0.%d' % i
-            hosts.append(net.addHost(name, ip=ip))
+            hosts.append(self.addHost(name, ip=ip))
 
         switches = []
         info('*** Adding switch\n')
         for i in range(1, num_hosts+1):
             name = 's%d' % i
-            switches.append(net.addSwitch(name))
+            switches.append(self.addSwitch(name))
 
         info('*** Creating links\n')
         for h, s in zip(hosts, switches):
-            net.addLink(h, s, cls=TCLink)
+            self.addLink(h, s, cls=TCLink)
         for i in range(num_hosts):
             for k in range(i+1, num_hosts):
-                net.addLink(switches[i], switches[k],
+                self.addLink(switches[i], switches[k],
                             cls=TCLink, bw=speeds[i][k])
         
 
