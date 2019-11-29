@@ -30,11 +30,12 @@ speeds = [
           [935, 93, 175, 50, 535, 639, 243, 1000],
 ]
 
-def new_host(net, num_hosts):
+def new_host(net, speeds):
     hosts = []
     routers = []
     links = {}
     counters = {}
+    num_hosts = len(speeds)
     for i in range(1, num_hosts+1):
         h = net.addHost('h%d' % i)
         r = net.addHost('r%d' % i)
@@ -43,10 +44,11 @@ def new_host(net, num_hosts):
         net.addLink(h, r)
         counters[r.name] = 1
         links[r.name] = []
-    for r in routers:
-        for o in routers:
+    for i, r in enumerate(routers):
+        for k, o in enumerate(routers):
             if r.name < o.name:
-                net.addLink(r, o)
+                s = speeds[i][k]
+                net.addLink(r, o, bw=s)
                 links[r.name].append((o.name, '%s-eth%d' % (r.name, counters[r.name])))
                 links[o.name].append((r.name, '%s-eth%d' % (o.name, counters[o.name])))
                 counters[r.name] += 1
@@ -95,9 +97,7 @@ def config_routers(routers, links):
 
 def create_topology():
     net = Mininet(link=TCLink)
-    hosts, routers, links = new_host(net, 3)
-    h1, h2, h3 = hosts
-    r1, r2, r3 = routers
+    hosts, routers, links = new_host(net, speeds)
     net.build()
 
     config_routers(routers, links)
